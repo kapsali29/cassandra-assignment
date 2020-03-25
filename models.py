@@ -55,3 +55,36 @@ class UserFollower(Model):
 
     user_name = Text(primary_key=True)
     follower_name = Text(primary_key=True)
+
+
+class SongInPlayList(Model):
+    __table_name__ = 'SongInPlayList'
+    __keyspace__ = CASSANDRA_KEY_SPACE
+    __connection__ = CONNECTION_NAME
+
+    playlist_name = Text(primary_key=True)
+    song_name = Text(primary_key=True)
+    artist_name = Text(primary_key=True)
+    year = Integer(primary_key=True)
+    genre = Text()
+
+
+class PlaylistPopularityPrefixed(Model):
+    __table_name__ = 'PlaylistPopularityPrefixed'
+    __keyspace__ = CASSANDRA_KEY_SPACE
+    __connection__ = CONNECTION_NAME
+
+    prefix = Integer(primary_key=True)
+    playlist_name = Text(primary_key=True, clustering_order='ASC')
+    played = Integer(primary_key=True, clustering_order='DESC')
+
+
+class UserDecreasingPopularityPrefix(Model):
+    __table_name__ = 'UserDecreasingPopularityPrefix'
+    __keyspace__ = CASSANDRA_KEY_SPACE
+    __connection__ = CONNECTION_NAME
+
+    prefix = Integer(primary_key=True)
+    user_name = Text(primary_key=True, clustering_order='ASC')
+    followers = Integer(primary_key=True, clustering_order='DESC')
+

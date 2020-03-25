@@ -3,7 +3,8 @@ from cassandra.cluster import Cluster
 from cassandra.cqlengine import management
 from cassandra.cqlengine import connection
 
-from models import SongByName, SongsPlayedByUser
+from models import SongByName, SongsPlayedByUser, SearchPlayListByName, PlayListFollower, UserFollower, SongInPlayList, \
+    PlaylistPopularityPrefixed, UserDecreasingPopularityPrefix
 from settings import CASSANDRA_NODE, CASSANDRA_PORT, CASSANDRA_USERNAME, CASSANDRA_PASSWORD, CASSANDRA_KEY_SPACE, \
     CONNECTION_NAME, REPLICATION_FACTOR
 
@@ -37,6 +38,13 @@ class CassandraClient(object):
     def sync_models():
         management.sync_table(SongByName)
         management.sync_table(SongsPlayedByUser)
+        management.sync_table(SearchPlayListByName)
+        management.sync_table(PlayListFollower)
+        management.sync_table(UserFollower)
+        management.sync_table(SongInPlayList)
+        management.sync_table(PlaylistPopularityPrefixed)
+        management.sync_table(UserDecreasingPopularityPrefix)
+
 
 
 client = CassandraClient()
