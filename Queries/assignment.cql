@@ -95,4 +95,92 @@ SELECT * FROM SearchPlayListByName WHERE creator='creator 1';
 CREATE INDEX ON SearchPlayListByName(genre);
 SELECT * FROM SearchPlayListByName WHERE genre='rock';
 
+// Get Playlist followers
+CREATE TABLE IF NOT EXISTS PlayListFollowers (
+    playlist_name text,
+    follower_name text,
+    PRIMARY KEY ((playlist_name), follower_name)
+);
 
+INSERT INTO PlayListFollowers (playlist_name, follower_name) VALUES ('playlist1', 'follower1');
+INSERT INTO PlayListFollowers (playlist_name, follower_name) VALUES ('playlist1', 'follower2');
+INSERT INTO PlayListFollowers (playlist_name, follower_name) VALUES ('playlist2', 'follower2');
+INSERT INTO PlayListFollowers (playlist_name, follower_name) VALUES ('playlist2', 'follower3');
+
+SELECT follower_name FROM PlayListFollowers WHERE playlist_name='playlist1';
+
+// Find user followers
+
+CREATE TABLE IF NOT EXISTS UserFollowers (
+  user_name text,
+  follower_name text,
+  PRIMARY KEY (user_name, follower_name)
+);
+
+INSERT INTO UserFollowers (user_name, follower_name) VALUES ('user1', 'user2');
+INSERT INTO UserFollowers (user_name, follower_name) VALUES ('user1', 'user3');
+INSERT INTO UserFollowers (user_name, follower_name) VALUES ('user1', 'user4');
+INSERT INTO UserFollowers (user_name, follower_name) VALUES ('user1', 'user5');
+INSERT INTO UserFollowers (user_name, follower_name) VALUES ('user2', 'user3');
+INSERT INTO UserFollowers (user_name, follower_name) VALUES ('user2', 'user8');
+INSERT INTO UserFollowers (user_name, follower_name) VALUES ('user2', 'user31');
+
+SELECT follower_name FROM UserFollowers WHERE user_name='user1';
+
+CREATE TABLE IF NOT EXISTS SongInPlayList (
+  playlist_name text,
+  song_name text,
+  artist_name text,
+  year int,
+  genre text,
+  PRIMARY KEY (playlist_name, song_name, artist_name, year)
+);
+
+INSERT INTO SongInPlayList (playlist_name, song_name, artist_name, year, genre)
+VALUES ('playlist1', 'song1', 'artist1', 2011, 'rock');
+INSERT INTO SongInPlayList (playlist_name, song_name, artist_name, year, genre)
+VALUES ('playlist1', 'song2', 'artist1', 2012, 'rock');
+INSERT INTO SongInPlayList (playlist_name, song_name, artist_name, year, genre)
+VALUES ('playlist1', 'song3', 'artist1', 2013, 'rock');
+INSERT INTO SongInPlayList (playlist_name, song_name, artist_name, year, genre)
+VALUES ('playlist1', 'song4', 'artist2', 2014, 'rock');
+INSERT INTO SongInPlayList (playlist_name, song_name, artist_name, year, genre)
+VALUES ('playlist2', 'song2', 'artist1', 2011, 'pop');
+
+SELECT song_name FROM SongInPlayList WHERE playlist_name='playlist1';
+
+// List playlists in Decreasing Popularity
+
+CREATE TABLE IF NOT EXISTS PlaylistPopularityPrefixed (
+    prefix int,
+    playlist_name text,
+    played int,
+    PRIMARY KEY (prefix, playlist_name, played)
+) WITH CLUSTERING ORDER BY (playlist_name ASC , played DESC);
+
+INSERT INTO PlaylistPopularityPrefixed (prefix, playlist_name, played) VALUES (1, 'playlist', 56);
+INSERT INTO PlaylistPopularityPrefixed (prefix, playlist_name, played) VALUES (1, 'playlist1', 66);
+INSERT INTO PlaylistPopularityPrefixed (prefix, playlist_name, played) VALUES (1, 'playlist2', 66);
+INSERT INTO PlaylistPopularityPrefixed (prefix, playlist_name, played) VALUES (1, 'playlist3', 76);
+INSERT INTO PlaylistPopularityPrefixed (prefix, playlist_name, played) VALUES (1, 'playlist4', 86);
+INSERT INTO PlaylistPopularityPrefixed (prefix, playlist_name, played) VALUES (1, 'playlist6', 96);
+
+SELECT * FROM PlaylistPopularityPrefixed;
+
+// List users in Decreasing Popularity
+
+CREATE TABLE IF NOT EXISTS UserDecreasingPopularityPrefix(
+    prefix int,
+    user_name text,
+    followers int,
+    PRIMARY KEY (prefix, followers, user_name)
+) WITH CLUSTERING ORDER BY (followers DESC, user_name ASC);
+
+INSERT INTO UserDecreasingPopularityPrefix (prefix, user_name, followers) VALUES (1, 'user1', 23);
+INSERT INTO UserDecreasingPopularityPrefix (prefix, user_name, followers) VALUES (1, 'user2', 26);
+INSERT INTO UserDecreasingPopularityPrefix (prefix, user_name, followers) VALUES (1, 'user4', 63);
+INSERT INTO UserDecreasingPopularityPrefix (prefix, user_name, followers) VALUES (1, 'user10', 123);
+INSERT INTO UserDecreasingPopularityPrefix (prefix, user_name, followers) VALUES (1, 'user19', 13);
+INSERT INTO UserDecreasingPopularityPrefix (prefix, user_name, followers) VALUES (1, 'user14', 203);
+
+SELECT * FROM UserDecreasingPopularityPrefix;
