@@ -1,6 +1,6 @@
 import argparse
 
-from models import SongByName, SongsPlayedByUser, SearchPlayListByName, PlayListFollower
+from models import SongByName, SongsPlayedByUser, SearchPlayListByName, PlayListFollower, UserFollower, SongInPlayList
 
 
 def get_parser():
@@ -84,4 +84,23 @@ def get_playlist_followers(playlist_name):
 
 def create_user_followers(**kwargs):
     """This function is used to fill with Data UserFollowers Table"""
+    UserFollower.objects.create(**kwargs)
 
+
+def get_user_followers(user_name):
+    """This function is used to retrieve user followers"""
+    followers = UserFollower.objects.filter(user_name=user_name)
+    results = [res.follower_name for res in followers]
+    return results
+
+
+def create_song_in_playlist(**kwargs):
+    """This function is used to fill with data Table SongInPlayList"""
+    SongInPlayList.objects.create(**kwargs)
+
+
+def get_song_in_playlist(playlist_name):
+    """This function is used to retrieve songs in playlist"""
+    song_objs = SongInPlayList.objects.filter(playlist_name=playlist_name)
+    songs = [s_obj.song_name for s_obj in song_objs]
+    return songs
