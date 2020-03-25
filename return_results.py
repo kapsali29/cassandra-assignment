@@ -1,7 +1,9 @@
 from cassandra_client import CassandraClient
 from utils import create_song_by_name, get_song_by_name, get_parser, create_songs_played_by_user, \
     get_songs_played_by_user, create_search_playlist_by_name, get_search_playlist_by_name, create_playlist_followers, \
-    get_playlist_followers, create_user_followers, get_user_followers, create_song_in_playlist, get_song_in_playlist
+    get_playlist_followers, create_user_followers, get_user_followers, create_song_in_playlist, get_song_in_playlist, \
+    create_user_decreasing_popularity_prefix, get_user_in_decreasing_popularity, create_playlist_decreasing_popularity, \
+    get_playlist_decreasing_popularity
 
 client = CassandraClient()
 client.sync_models()
@@ -64,5 +66,26 @@ elif ask == 'song_in_playlist':
                             genre='pop')
 
     res = get_song_in_playlist(playlist_name='playlist1')
+
+elif ask == 'user_decreasing_popularity':
+    create_user_decreasing_popularity_prefix(prefix=1, user_name='user1', followers=23)
+    create_user_decreasing_popularity_prefix(prefix=1, user_name='user2', followers=26)
+    create_user_decreasing_popularity_prefix(prefix=1, user_name='user3', followers=53)
+    create_user_decreasing_popularity_prefix(prefix=1, user_name='user4', followers=73)
+    create_user_decreasing_popularity_prefix(prefix=1, user_name='user9', followers=83)
+
+    res = get_user_in_decreasing_popularity()
+
+elif ask == 'playlist_decreasing_popularity':
+    create_playlist_decreasing_popularity(prefix=1, playlist_name='playlist', played=56)
+    create_playlist_decreasing_popularity(prefix=1, playlist_name='playlist1', played=156)
+    create_playlist_decreasing_popularity(prefix=1, playlist_name='playlist2', played=256)
+    create_playlist_decreasing_popularity(prefix=1, playlist_name='playlist3', played=6)
+    create_playlist_decreasing_popularity(prefix=1, playlist_name='playlist6', played=609)
+    create_playlist_decreasing_popularity(prefix=1, playlist_name='playlist7', played=516)
+
+    res = get_playlist_decreasing_popularity()
+else:
+    print("Provide a valid command line argument!")
 
 print(res)

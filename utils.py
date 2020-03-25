@@ -1,6 +1,7 @@
 import argparse
 
-from models import SongByName, SongsPlayedByUser, SearchPlayListByName, PlayListFollower, UserFollower, SongInPlayList
+from models import SongByName, SongsPlayedByUser, SearchPlayListByName, PlayListFollower, UserFollower, SongInPlayList, \
+    UserDecreasingPopularityPrefix, PlaylistPopularityPrefixed
 
 
 def get_parser():
@@ -104,3 +105,27 @@ def get_song_in_playlist(playlist_name):
     song_objs = SongInPlayList.objects.filter(playlist_name=playlist_name)
     songs = [s_obj.song_name for s_obj in song_objs]
     return songs
+
+
+def create_user_decreasing_popularity_prefix(**kwargs):
+    """This function is used to fill with demo data UserDecreasingPopularityPrefix Table"""
+    UserDecreasingPopularityPrefix.objects.create(**kwargs)
+
+
+def get_user_in_decreasing_popularity():
+    """This function is used to return users in decreasing popularity"""
+    all_users = UserDecreasingPopularityPrefix.objects.all()
+    results = [{"user_name": user_obj.user_name, "popularity": user_obj.followers} for user_obj in all_users]
+    return results
+
+
+def create_playlist_decreasing_popularity(**kwargs):
+    """This function is used to fill with dummy data PlaylistPopularityPrefixed Table"""
+    PlaylistPopularityPrefixed.objects.create(**kwargs)
+
+
+def get_playlist_decreasing_popularity():
+    """This function is used to return playlists in decreasing popularity"""
+    all_ = PlaylistPopularityPrefixed.objects.all()
+    results = [{"playlist_name": obj.playlist_name, "popularity": obj.played} for obj in all_]
+    return results
