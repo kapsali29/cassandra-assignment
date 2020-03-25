@@ -1,6 +1,7 @@
 from cassandra_client import CassandraClient
 from utils import create_song_by_name, get_song_by_name, get_parser, create_songs_played_by_user, \
-    get_songs_played_by_user
+    get_songs_played_by_user, create_search_playlist_by_name, get_search_playlist_by_name, create_playlist_followers, \
+    get_playlist_followers
 
 client = CassandraClient()
 client.sync_models()
@@ -25,5 +26,22 @@ elif ask == 'songs_played_by_user':
     create_songs_played_by_user(song_name='this_song43', user_name='user3', genre='hip hop', date_played='2018-02-03')
 
     res = get_songs_played_by_user(user='user3')
+
+elif ask == 'search_playlist_by_name':
+    create_search_playlist_by_name(name='playlist1', description='This is playlist 1', genre='rock', creator='creator 1', songs=['song1', 'song2', 'song3'])
+    create_search_playlist_by_name(name='playlist2', description='This is playlist 2', genre='rock',
+                                   creator='creator 2', songs=['song12', 'song22', 'song32'])
+    create_search_playlist_by_name(name='playlist3', description='This is playlist 3', genre='rock',
+                                   creator='creator 3', songs=['song3', 'song23', 'song33'])
+
+    res = get_search_playlist_by_name(playlist_name='playlist1')
+
+elif ask == 'playlist_followers':
+    create_playlist_followers(playlist_name='playlist1', follower_name='follower1')
+    create_playlist_followers(playlist_name='playlist1', follower_name='follower2')
+    create_playlist_followers(playlist_name='playlist2', follower_name='follower2')
+    create_playlist_followers(playlist_name='playlist2', follower_name='follower3')
+
+    res = get_playlist_followers(playlist_name='playlist1')
 
 print(res)
