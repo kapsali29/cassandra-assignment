@@ -36,6 +36,7 @@ class CassandraClient(object):
 
     @staticmethod
     def sync_models():
+        """This method is used to sync Cassandra models found in models.py"""
         management.sync_table(SongByName)
         management.sync_table(SongsPlayedByUser)
         management.sync_table(SearchPlayListByName)
@@ -44,8 +45,3 @@ class CassandraClient(object):
         management.sync_table(SongInPlayList)
         management.sync_table(PlaylistPopularityPrefixed)
         management.sync_table(UserDecreasingPopularityPrefix)
-
-
-
-client = CassandraClient()
-client.sync_models()
