@@ -1,5 +1,5 @@
-CREATE KEYSPACE cassandra WITH replication = {'replication_factor': 3, 'class': 'SimpleStrategy'};
-USE cassandra;
+CREATE KEYSPACE cassandra_ WITH replication = {'replication_factor': 3, 'class': 'SimpleStrategy'};
+USE cassandra_;
 
 // SELECT USER BY NAME
 
@@ -86,3 +86,13 @@ INSERT INTO  SearchPlayListByName (name, description, genre, creator, songs)
 VALUES ('playlist3', 'this is playlist3', 'rock', 'creator 3', ['song13', 'song23', 'song33']);
 
 SELECT * FROM SearchPlayListByName WHERE name='playlist1';
+
+// SELECT PLAYLIST BY CREATOR
+CREATE INDEX ON SearchPlayListByName(creator);
+SELECT * FROM SearchPlayListByName WHERE creator='creator 1';
+
+// SELECT PLAYLIST BY GENRE
+CREATE INDEX ON SearchPlayListByName(genre);
+SELECT * FROM SearchPlayListByName WHERE genre='rock';
+
+
