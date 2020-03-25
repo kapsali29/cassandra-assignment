@@ -1,6 +1,6 @@
 import argparse
 
-from models import SongByName
+from models import SongByName, SongsPlayedByUser
 
 
 def get_parser():
@@ -36,3 +36,24 @@ def get_song_by_name(song_name):
     """
     song = SongByName.objects.filter(song_name=song_name)
     return song.get().values()
+
+
+def create_songs_played_by_user(**kwargs):
+    """
+    This function is used to create data for SongsPlayedByUser Table
+    Args:
+        **kwargs: provided kwargs
+
+    Examples:
+        >>> create_songs_played_by_user(song_name='this song', user_name='this user', genre='rock', date_played='2010-01-09')
+
+    """
+    SongsPlayedByUser.objects.create(**kwargs)
+
+
+def get_songs_played_by_user(user):
+    """Return songs played by user"""
+
+    user_songs = SongsPlayedByUser.objects.filter(user_name=user)
+    songs = [res.song_name for res in user_songs]
+    return songs
