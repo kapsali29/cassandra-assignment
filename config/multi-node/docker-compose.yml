@@ -7,6 +7,10 @@ services:
     image: cassandra:3.11
     networks:
       - cluster
+    environment:
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+      - CASSANDRA_DC=DC1
+      - CASSANDRA_RACK=RACK1
   n2:
     hostname: n2
     container_name: n2
@@ -15,6 +19,9 @@ services:
       - cluster
     environment:
       - CASSANDRA_SEEDS=n1
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+      - CASSANDRA_DC=DC1
+      - CASSANDRA_RACK=RACK2
 
   n3:
     hostname: n3
@@ -24,6 +31,9 @@ services:
       - cluster
     environment:
       - CASSANDRA_SEEDS=n1
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+      - CASSANDRA_DC=DC1
+      - CASSANDRA_RACK=RACK3
 
 
 networks:
