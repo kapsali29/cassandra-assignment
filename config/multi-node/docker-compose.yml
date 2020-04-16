@@ -1,0 +1,30 @@
+version: '3.7'
+
+services:
+  n1:
+    hostname: n1
+    container_name: n1
+    image: cassandra:3.11
+    networks:
+      - cluster
+  n2:
+    hostname: n2
+    container_name: n2
+    image: cassandra:3.11
+    networks:
+      - cluster
+    environment:
+      - CASSANDRA_SEEDS=n1
+
+  n3:
+    hostname: n3
+    container_name: n3
+    image: cassandra:3.11
+    networks:
+      - cluster
+    environment:
+      - CASSANDRA_SEEDS=n1
+
+
+networks:
+  cluster:
