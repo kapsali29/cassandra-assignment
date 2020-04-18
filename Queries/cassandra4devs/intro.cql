@@ -84,3 +84,47 @@ ALTER TABLE users add reset_token varchar;
 update users SET reset_token='abc1' ttl 120 WHERE id='john-doe';
 
 select ttl(reset_token) from users;
+
+CREATE TABLE IF NOT EXISTS ratings (
+    course_id varchar ,
+    ratings_count counter,
+    ratings_total counter,
+    user_id varchar,
+    rating float,
+    PRIMARY KEY (course_id, user_id)
+);
+
+UPDATE ratings
+SET ratings_count = ratings_count + 1, ratings_total = ratings_total + 4
+WHERE course_id = 'cassandra-for-developers';
+
+SELECT min(rating), max(rating), count(rating), avg(rating)
+FROM ratings WHERE course_id='cassandra-developers';
+
+CREATE table ratings (
+    course_id varchar primary key ,
+    ratings_count counter,
+    ratings_total counter
+) with comment = 'a table of course ratings';
+
+UPDATE ratings SET ratings_count = ratings_count +1, ratings_total = ratings_total + 4
+WHERE course_id='nodejs-big-picture';
+
+SELECT * FROM pluralsight.ratings
+
+CREATE table ratings2 (
+    course_id varchar,
+    user_id varchar,
+    rating float,
+    primary key ( course_id, user_id )
+)
+
+INSERT INTO ratings2 (course_id, user_id, rating) VALUES ('cassandra-developers', 'user1', 4);
+INSERT INTO ratings2 (course_id, user_id, rating) VALUES ('cassandra-developers', 'user2', 5);
+INSERT INTO ratings2 (course_id, user_id, rating) VALUES ('cassandra-developers', 'user3', 4);
+INSERT INTO ratings2 (course_id, user_id, rating) VALUES ('advanced-python', 'user1', 5);
+
+SELECT course_id, avg(rating) from ratings2 where course_id='cassandra-developers';
+SELECT course_id, avg(rating) from ratings2 where course_id='advanced-python';
+
+
